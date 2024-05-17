@@ -30,6 +30,8 @@ import { act, useState } from 'react';
 import AppContextCard from './AppContextCard';
 import useContextMutation from '@/hooks/useContextMutation';
 import useConversationMutation from '@/hooks/useConversationMutation';
+import TrialCreditCard from './TrialCreditCard';
+import AppInput from './AppInput';
 
 interface ChatManager {
   createChat: (chat: { title?: string; description?: string }) => Promise<Chat | null>;
@@ -84,19 +86,17 @@ const ChatUI = (props: ChatManager) => {
       contextId: context.id,
     });
   };
-  const DEFAULT_APP_CONTEXT_ID = '37';
   const handleSubmitMessage = async () => {
     addConversationMutation.mutate({
       chat_id: activeChat?.id.toString() as string,
       message: text,
-      contextIds: (chatContexts && chatContexts.data && chatContexts.data.map((ctx) => ctx.context.id.toString())) || [
-        DEFAULT_APP_CONTEXT_ID,
-      ],
     });
   };
 
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
+      <TrialCreditCard percentage={80} onDismissClick={() => true} onUpgradeClick={() => true} />
+      <AppInput placeholder="Enter your email" label="Email" />
       <MainContainer responsive>
         <Sidebar position="left">
           <Search placeholder="Search..." />
@@ -204,7 +204,7 @@ const ChatUI = (props: ChatManager) => {
                 }}
               >
                 <Message.CustomContent>
-                  <ReactMarkdown remarkPlugins={[remarkMath, rehypeKatex]}>{message.entry}</ReactMarkdown>
+                  <ReactMarkdown>{message.entry}</ReactMarkdown>
                 </Message.CustomContent>
                 <Message.Footer
                   sentTime={new Date(message.created_at).toLocaleTimeString()}

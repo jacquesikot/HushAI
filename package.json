@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.0.3",
@@ -19,8 +21,10 @@
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.1",
     "@tanstack/react-query": "^5.35.5",
+    "base64-arraybuffer": "^1.0.2",
     "langchain": "^0.1.36",
     "next": "14.2.3",
+    "pdf-parse": "^1.1.1",
     "react": "^18",
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
@@ -33,12 +37,25 @@
     "youtubei.js": "^9.4.0"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.4.0",
+    "@storybook/addon-essentials": "^8.1.1",
+    "@storybook/addon-interactions": "^8.1.1",
+    "@storybook/addon-links": "^8.1.1",
+    "@storybook/addon-onboarding": "^8.1.1",
+    "@storybook/addon-themes": "^8.1.1",
+    "@storybook/blocks": "^8.1.1",
+    "@storybook/nextjs": "^8.1.1",
+    "@storybook/react": "^8.1.1",
+    "@storybook/test": "^8.1.1",
     "@tanstack/eslint-plugin-query": "^5.32.1",
+    "@types/formidable": "^3.4.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
+    "eslint-plugin-storybook": "^0.8.0",
+    "storybook": "^8.1.1",
     "typescript": "^5"
   }
 }

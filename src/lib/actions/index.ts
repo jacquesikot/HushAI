@@ -14,8 +14,8 @@ export interface MetaData {
   text: string;
 }
 
-export const getMatchFromEmbeddings = async (inquiry: string, topK: number, contextIds: string[]) => {
-  const embeddings = new OpenAIEmbeddings();
+export const getMatchFromEmbeddings = async (inquiry: string, topK: number, contextId: string) => {
+  const embeddings = new OpenAIEmbeddings({});
   const supabase = createClient();
 
   const vectorstore = new SupabaseVectorStore(embeddings, {
@@ -24,18 +24,12 @@ export const getMatchFromEmbeddings = async (inquiry: string, topK: number, cont
     queryName: 'match_documents',
   });
 
-  const allContextsQueryResults = [];
-
-  for (const contextId of contextIds) {
-    const queryResult = await vectorstore.similaritySearch(inquiry, topK, {
-      contextId,
-    });
-
-    allContextsQueryResults.push(...queryResult);
-  }
+  const queryResult = await vectorstore.similaritySearch(inquiry, topK, {
+    contextId,
+  });
 
   return (
-    allContextsQueryResults.map((match) => ({
+    queryResult.map((match) => ({
       ...match,
       metadata: match.metadata as MetaData,
     })) || []

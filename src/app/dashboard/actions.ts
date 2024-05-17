@@ -99,11 +99,10 @@ export const addContextToChat = async (chatContext: { chatId: string; contextId:
   return data ? data : [];
 };
 
-export const createConversationMessage = async (convo: { chat_id: string; message: string; contextIds: string[] }) => {
-  console.log('🚀 ~ createConversationMessage ~ convo:', convo);
+export const createConversationMessage = async (convo: { chat_id: string; message: string }) => {
   const supabase = createClient();
   const { data: userData } = await supabase.auth.getUser();
-  const { data } = await supabase
+  await supabase
     .from('conversation')
     .insert({
       speaker: 'user',
@@ -115,6 +114,7 @@ export const createConversationMessage = async (convo: { chat_id: string; messag
     .single()
     .throwOnError();
 
+  const chatContext = await getChatContexts(convo.chat_id);
   const llm = new ChatOpenAI();
   const prompt = new PromptTemplate({
     template: prompts.inquiryTemplate,
@@ -125,25 +125,37 @@ export const createConversationMessage = async (convo: { chat_id: string; messag
     userPrompt: convo.message,
   });
   const inquiry = inquiryChainResult.content;
-  const matches = await getMatchFromEmbeddings(inquiry as string, 2, convo.contextIds);
-  console.log('🚀 ~ createConversationMessage ~ matches:', matches);
-  if (matches.length < 1) {
+
+  if (!chatContext || chatContext.length < 1) {
     return await supabase
       .from('conversation')
       .insert({
         speaker: 'ai',
         user_id: userData.user?.id,
         chat_id: convo.chat_id,
-        entry: 'I am sorry, I could not find an answer to your question.',
+        entry: 'I am sorry, no context was provided to answer your question.',
       })
       .select()
       .single();
   } else {
+    const matches: any = await getMatchFromEmbeddings(convo.message as string, 3, chatContext[0].context_id.toString());
+    if (!matches || matches.length < 1) {
+      return await supabase
+        .from('conversation')
+        .insert({
+          speaker: 'ai',
+          user_id: userData.user?.id,
+          chat_id: convo.chat_id,
+          entry: 'I am sorry, the context provided does not have an answer to your question',
+        })
+        .select()
+        .single();
+    }
     const urls =
       matches &&
       Array.from(
         new Set(
-          matches.map((match) => {
+          matches.map((match: any) => {
             const metadata = match.metadata as MetaData;
             const { url } = metadata;
             return url;
@@ -154,7 +166,7 @@ export const createConversationMessage = async (convo: { chat_id: string; messag
     const docs =
       matches &&
       Array.from(
-        matches.reduce((map, match) => {
+        matches.reduce((map: any, match: any) => {
           const metadata = match.metadata as MetaData;
           const { text, url } = metadata;
           if (!map.has(url)) {
@@ -162,24 +174,24 @@ export const createConversationMessage = async (convo: { chat_id: string; messag
           }
           return map;
         }, new Map())
-      ).map(([_, text]) => text);
+      ).map(([_, text]: any) => text);
 
     const promptTemplate = new PromptTemplate({
-      template: prompts.qaTemplate,
-      inputVariables: ['question', 'context', 'urls'],
+      template: prompts.simplePrompt,
+      inputVariables: ['question', 'context'],
     });
 
     const chat = new ChatOpenAI({
-      modelName: 'gpt-3.5-turbo',
+      modelName: 'gpt-4o',
     });
 
     const chain = promptTemplate.pipe(chat);
 
     const response = await chain.invoke({
-      question: inquiry,
+      question: convo.message,
       context: docs.join('\n'),
-      urls: urls,
     });
+    console.log('🚀 ~ createConversationMessage ~ docs', docs.join('\n'));
     await supabase
       .from('conversation')
       .insert({
