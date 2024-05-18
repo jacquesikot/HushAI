@@ -2,14 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  placeholder: string;
-  label: string;
-  isSecured?: boolean;
+  type?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  label?: string;
   width?: string; // TODO: change to number
+  isSecured?: boolean;
 }
 const Wrapper = styled.div``;
 const LabelText = styled.p`
-  color: ${(props) => props.theme.colors.text['text-secondary-(700)'].value};
+  color: ${(props) => props.theme.colors.text['text-primary-(900)'].value};
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -19,7 +22,8 @@ const LabelText = styled.p`
 const Input = styled.input<{ width?: string }>`
   width: ${(props) => props.width + 'px' || '100%'};
   border-radius: ${(props) => props.theme.radius['radius-md'].value};
-  border: 1px solid ${(props) => props.theme.colors.border['border-primary'].value};
+  border: 1px solid
+    ${(props) => props.theme.colors.border['border-primary'].value};
   background: ${(props) => props.theme.colors.background['bg-primary'].value};
   padding: 10px 14px;
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
@@ -32,7 +36,8 @@ const Input = styled.input<{ width?: string }>`
   color: ${(props) => props.theme.colors.text['text-placeholder'].value};
 
   &:focus {
-    border: 1px solid ${(props) => props.theme.colors.border['border-primary'].value};
+    border: 1px solid
+      ${(props) => props.theme.colors.border['border-primary'].value};
   }
 
   ::placeholder {

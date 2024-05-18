@@ -26,7 +26,7 @@ import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import useConversationQuery from '@/hooks/useConversationQuery';
 import useContextQuery from '@/hooks/useContextQuery';
 import ChooseContextModal from './ChooseContextModal';
-import { act, useState } from 'react';
+import { ChangeEvent, act, useState } from 'react';
 import AppContextCard from './AppContextCard';
 import useContextMutation from '@/hooks/useContextMutation';
 import useConversationMutation from '@/hooks/useConversationMutation';
@@ -96,7 +96,9 @@ const ChatUI = (props: ChatManager) => {
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
       <TrialCreditCard percentage={80} onDismissClick={() => true} onUpgradeClick={() => true} />
-      <AppInput placeholder="Enter your email" label="Email" />
+      <AppInput placeholder="Enter your email" label="Email" value={''} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+        throw new Error('Function not implemented.');
+      } }/>
       <MainContainer responsive>
         <Sidebar position="left">
           <Search placeholder="Search..." />
