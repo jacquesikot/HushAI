@@ -1,5 +1,5 @@
 import { readUserSession } from '@/lib/actions';
-import AuthPage from './auth/page';
+import AuthPage from './register/page';
 import { redirect } from 'next/navigation';
 
 export default async function Home() {

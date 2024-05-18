@@ -1,12 +1,6 @@
-import * as React from "react"
-const RegisterLogo = (props) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={58}
-    height={57}
-    fill="none"
-    {...props}
-  >
+import * as React from 'react';
+const AppLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={58} height={57} fill="none" {...props}>
     <g filter="url(#a)">
       <g clipPath="url(#b)">
         <path
@@ -63,42 +57,19 @@ const RegisterLogo = (props) => (
       />
     </g>
     <defs>
-      <filter
-        id="a"
-        width={57}
-        height={57}
-        x={0.5}
-        y={0}
-        colorInterpolationFilters="sRGB"
-        filterUnits="userSpaceOnUse"
-      >
+      <filter id="a" width={57} height={57} x={0.5} y={0} colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse">
         <feFlood floodOpacity={0} result="BackgroundImageFix" />
-        <feColorMatrix
-          in="SourceAlpha"
-          result="hardAlpha"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-        />
+        <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
         <feOffset dy={1.5} />
         <feGaussianBlur stdDeviation={1.5} />
         <feColorMatrix values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.06 0" />
         <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_53_387" />
-        <feColorMatrix
-          in="SourceAlpha"
-          result="hardAlpha"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-        />
+        <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
         <feOffset dy={1.5} />
         <feGaussianBlur stdDeviation={2.25} />
         <feColorMatrix values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.1 0" />
-        <feBlend
-          in2="effect1_dropShadow_53_387"
-          result="effect2_dropShadow_53_387"
-        />
-        <feBlend
-          in="SourceGraphic"
-          in2="effect2_dropShadow_53_387"
-          result="shape"
-        />
+        <feBlend in2="effect1_dropShadow_53_387" result="effect2_dropShadow_53_387" />
+        <feBlend in="SourceGraphic" in2="effect2_dropShadow_53_387" result="shape" />
       </filter>
       <filter
         id="d"
@@ -110,32 +81,17 @@ const RegisterLogo = (props) => (
         filterUnits="userSpaceOnUse"
       >
         <feFlood floodOpacity={0} result="BackgroundImageFix" />
-        <feColorMatrix
-          in="SourceAlpha"
-          result="hardAlpha"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-        />
+        <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
         <feOffset dy={1.5} />
         <feGaussianBlur stdDeviation={1.5} />
         <feColorMatrix values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.06 0" />
         <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_53_387" />
-        <feColorMatrix
-          in="SourceAlpha"
-          result="hardAlpha"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-        />
+        <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
         <feOffset dy={1.5} />
         <feGaussianBlur stdDeviation={2.25} />
         <feColorMatrix values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.1 0" />
-        <feBlend
-          in2="effect1_dropShadow_53_387"
-          result="effect2_dropShadow_53_387"
-        />
-        <feBlend
-          in="SourceGraphic"
-          in2="effect2_dropShadow_53_387"
-          result="shape"
-        />
+        <feBlend in2="effect1_dropShadow_53_387" result="effect2_dropShadow_53_387" />
+        <feBlend in="SourceGraphic" in2="effect2_dropShadow_53_387" result="shape" />
       </filter>
       <filter
         id="f"
@@ -148,36 +104,14 @@ const RegisterLogo = (props) => (
       >
         <feFlood floodOpacity={0} result="BackgroundImageFix" />
         <feGaussianBlur in="BackgroundImageFix" stdDeviation={3.75} />
-        <feComposite
-          in2="SourceAlpha"
-          operator="in"
-          result="effect1_backgroundBlur_53_387"
-        />
-        <feBlend
-          in="SourceGraphic"
-          in2="effect1_backgroundBlur_53_387"
-          result="shape"
-        />
+        <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_53_387" />
+        <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_53_387" result="shape" />
       </filter>
-      <linearGradient
-        id="c"
-        x1={29}
-        x2={29}
-        y1={3}
-        y2={51}
-        gradientUnits="userSpaceOnUse"
-      >
+      <linearGradient id="c" x1={29} x2={29} y1={3} y2={51} gradientUnits="userSpaceOnUse">
         <stop stopColor="#fff" />
         <stop offset={1} stopColor="#D0D5DD" />
       </linearGradient>
-      <linearGradient
-        id="e"
-        x1={23}
-        x2={35}
-        y1={39}
-        y2={15}
-        gradientUnits="userSpaceOnUse"
-      >
+      <linearGradient id="e" x1={23} x2={35} y1={39} y2={15} gradientUnits="userSpaceOnUse">
         <stop stopColor="#53389E" />
         <stop offset={1} stopColor="#6941C6" />
       </linearGradient>
@@ -189,5 +123,5 @@ const RegisterLogo = (props) => (
       </clipPath>
     </defs>
   </svg>
-)
-export default RegisterLogo
+);
+export default AppLogo;
