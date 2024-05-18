@@ -36,7 +36,7 @@ const StyledParagraph = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  color: #a0a0ab;
+  color: ${(props) => props.theme.colors.text['text-tertiary-(600)'].value};
   margin: 0;
   cursor: pointer;
 

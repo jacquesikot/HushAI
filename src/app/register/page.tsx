@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   background-repeat: no-repeat;
   background-position: top;
   background-size: 700px 700px;
-  background-color: #131316;
+  background-color: ${(props) => props.theme.colors.background['bg-primary'].value};
   width: 100%;
   height: 100vh;
   justify-content: center;

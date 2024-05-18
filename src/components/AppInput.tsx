@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import Input from './Input';
 
 interface Props {
@@ -25,10 +25,11 @@ const LabelText = styled.p`
 `;
 
 const AppInput = (props: Props) => {
+  const theme = useTheme();
   return (
     <Wrapper width={props.width}>
       <LabelText>{props.label}</LabelText>
-      <Input placeholder={props.placeholder} />
+      <Input placeholder={props.placeholder} appTheme={theme} />
     </Wrapper>
   );
 };

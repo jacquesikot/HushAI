@@ -1,17 +1,22 @@
-import { InputBase } from '@mui/material';
+import { LightTheme } from '@/theme/types';
+import { InputBase, InputBaseProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const BootstrapInput = styled(InputBase)(({ theme }) => ({
+interface ButtonProps extends InputBaseProps {
+  appTheme: LightTheme;
+}
+
+const Input = styled(InputBase)((props: ButtonProps) => ({
   width: '100%',
   'label + &': {
-    marginTop: theme.spacing(3),
+    marginTop: props.appTheme.spacing['spacing-sm'].value,
   },
-  color: '#70707B',
+  color: props.appTheme.colors.text['text-placeholder'].value,
   '& .MuiInputBase-input': {
     borderRadius: 6,
     position: 'relative',
-    backgroundColor: '#131316',
-    border: '1px solid #3F3F46',
+    backgroundColor: props.appTheme.colors.background['bg-primary'].value,
+    border: `1px solid ${props.appTheme.colors.border['border-primary'].value}`,
     fontSize: '16px',
     fontStyle: 'normal',
     fontWeight: 400,
@@ -20,17 +25,17 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     gap: 0,
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // transition: theme.transitions.create(['border-color', 'box-shadow']),
     '&:focus': {
       borderRadius: 4,
-      borderColor: '#7F56D9',
+      borderColor: props.appTheme.componentColors.components.buttons.primary['button-primary-bg'].value,
       boxShadow: '0 0 0 0.2rem rgba(16, 24, 40, 0.05)',
     },
   },
   '& .Mui-error': {
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
     border: '1px solid red',
   },
 }));
 
-export default BootstrapInput;
+export default Input;
