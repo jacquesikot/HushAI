@@ -6,6 +6,8 @@ interface Props {
   label: string;
   isSecured?: boolean;
   width?: number; // TODO: change to number
+  type?:  string;
+
 }
 const Wrapper = styled.div``;
 const LabelText = styled.p`
@@ -44,7 +46,7 @@ const AppInput = (props: Props) => {
   return (
     <Wrapper>
       <LabelText>{props.label}</LabelText>
-      <Input placeholder={props.placeholder} width={props.width} />
+      <Input placeholder={props.placeholder} width={props.width} type={props.type} />
     </Wrapper>
   );
 };
