@@ -1,31 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import AppInput from '@/components/AppInput';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: 'Components/AppInput',
   component: AppInput,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {},
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { placeholder: 'This is a test placeholder', label: 'Email', width: '360' },
+  argTypes: {
+    type: { control: 'text' },
+    value: { control: 'text' },
+    placeholder: { control: 'text' },
+    label: { control: 'text' },
+    width: { control: 'text' },
+    isSecured: { control: 'boolean' },
+  },
+  args: {
+    placeholder: 'This is a test placeholder',
+    label: 'Email',
+    width: '360px',
+    value: '',
+    onChange: () => {},
+  },
 } satisfies Meta<typeof AppInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Normal: Story = {
   args: {
     placeholder: 'Enter your email',
     label: 'Email',
-    width: '360',
+    width: '360px',
   },
 };
 
@@ -34,5 +41,6 @@ export const Secured: Story = {
     placeholder: 'Enter your password',
     label: 'Password',
     isSecured: true,
+    width: '360px',
   },
 };
