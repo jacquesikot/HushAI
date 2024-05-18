@@ -46,7 +46,7 @@ const NewButton = styled.button<{
         css`
         border: 1px solid ${(props) => props.theme.colors.border["border-primary"].value};
         background: ${(props) => props.theme.colors.background["bg-primary"].value};
-       
+        color: ${(props) => props.theme.colors.text["text-secondary-(700)"].value}
         `}
 `;
 

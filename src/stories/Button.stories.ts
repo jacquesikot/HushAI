@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import Button from '../components/Button'
-// import Icongoogle from '@/appIcons/Icongoogle';
+
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -27,24 +27,20 @@ export const Primary: Story = {
   args: {
     type: 'primary',
     label: 'Sign in',
-    width: '360px',
+    width: 360,
   },
 };
 
 export const Secondary: Story = {
   args: {
     type: 'secondary',
-    label: 'Button',
-    // icon: <Icongoogle/>,
+    label: 'Sign in With Google',
+    width: 360,
+    
   
   },
 };
 
-export const error: Story = {
-  args: {
-    type: 'error',
-    label: 'Button',
-  },
-};
+
 
 

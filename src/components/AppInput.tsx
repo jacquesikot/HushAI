@@ -5,7 +5,7 @@ interface Props {
   placeholder: string;
   label: string;
   isSecured?: boolean;
-  width?: string; // TODO: change to number
+  width?: number; // TODO: change to number
 }
 const Wrapper = styled.div``;
 const LabelText = styled.p`
@@ -16,7 +16,7 @@ const LabelText = styled.p`
   line-height: 20px;
   margin-bottom: ${(props) => props.theme.spacing['spacing-sm'].value};
 `;
-const Input = styled.input<{ width?: string }>`
+const Input = styled.input<{ width?: number }>`
   width: ${(props) => props.width + 'px' || '100%'};
   border-radius: ${(props) => props.theme.radius['radius-md'].value};
   border: 1px solid ${(props) => props.theme.colors.border['border-primary'].value};
