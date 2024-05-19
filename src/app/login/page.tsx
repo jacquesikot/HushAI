@@ -8,7 +8,9 @@ import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import styled, { useTheme } from 'styled-components';
 import AppLogo from '@/icons/AppLogo';
+import LoginForm from '@/components/auth/LoginForm';
 import authPatterSvg from '../../../public/images/auth-grid-bg.svg';
+import { navigateToRegister } from './actions';
 
 const Wrapper = styled.div`
   background-image: url(${authPatterSvg.src});
@@ -90,6 +92,7 @@ export default function Login() {
       <AppLogo style={{ marginBottom: theme.spacing['spacing-3xl'].value }} />
       <HeaderText>Login in to your account</HeaderText>
       <Subtitle>Welcome back! Please enter your details.</Subtitle>
+      <LoginForm handleClickRegister={() => navigateToRegister()} />
     </Wrapper>
   );
 }
