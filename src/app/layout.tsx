@@ -6,6 +6,9 @@ import ToastProvider from './providers/ToastProvider';
 import { ReactQueryClientProvider } from './providers/ReactQueryClientProvider';
 import ThemeProvider from './providers/ThemeProvider';
 import StyledComponentsRegistry from '@/lib/registry';
+import { inject } from '@vercel/analytics';
+
+inject();
 
 const inter = Inter({
   subsets: ['latin'],

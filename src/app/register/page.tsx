@@ -9,7 +9,7 @@ import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import styled, { useTheme } from 'styled-components';
 import RegisterForm from '@/components/auth/RegisterForm';
-import AppLogo from '@/appIcons/AppLogo';
+import AppLogo from '@/icons/AppLogo';
 import authPatterSvg from '../../../public/images/auth-grid-bg.svg';
 
 const Wrapper = styled.div`

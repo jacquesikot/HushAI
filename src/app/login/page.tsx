@@ -3,15 +3,12 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 
-// import { login } from './actions';
 import { useTransition } from 'react';
 import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import styled, { useTheme } from 'styled-components';
-import RegisterForm from '@/components/auth/RegisterForm';
-import AppLogo from '@/appIcons/AppLogo';
+import AppLogo from '@/icons/AppLogo';
 import authPatterSvg from '../../../public/images/auth-grid-bg.svg';
-import { redirect } from 'next/navigation';
 
 const Wrapper = styled.div`
   background-image: url(${authPatterSvg.src});
@@ -71,30 +68,6 @@ export default function Login() {
     password?: string;
     name?: string;
   }>({});
-
-  const validate = () => {
-    const newErrors: {
-      email?: string;
-      password?: string;
-      name?: string;
-    } = {};
-    if (!email) newErrors.email = 'Email is required';
-    if (!password) newErrors.password = 'Password is required';
-    if (!name) newErrors.name = 'Name is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   if (validate()) {
-  //     // Handle registration logic here
-  //     console.log('Registered with:', { email, password, name });
-  //   }
-  // };
-
-  const hasMinLength = password.length >= 8;
-  const hasSpecialChar = /[!@#$%^&*]/.test(password);
 
   if (isPending) {
     return (
