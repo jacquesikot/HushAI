@@ -183,14 +183,14 @@ export const createConversationMessage = async (convo: { chat_id: string; messag
 
     const chat = new ChatOpenAI({
       modelName: 'gpt-4o',
-    });
+    }) as any;
 
     const chain = promptTemplate.pipe(chat);
 
-    const response = await chain.invoke({
+    const response = (await chain.invoke({
       question: convo.message,
       context: docs.join('\n'),
-    });
+    })) as any;
     await supabase
       .from('conversation')
       .insert({
