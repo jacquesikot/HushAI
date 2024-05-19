@@ -24,6 +24,9 @@ export async function login(formData: FormData) {
   revalidatePath('/', 'layout');
   redirect('/dashboard');
 }
+export const navigateToLogin = () => {
+  return redirect('/login');
+};
 
 export async function signup(formData: FormData) {
   const supabase = createClient();

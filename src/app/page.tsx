@@ -1,6 +1,6 @@
 import { readUserSession } from '@/lib/actions';
-import AuthPage from './auth/page';
 import { redirect } from 'next/navigation';
+import Login from './login/page';
 
 export default async function Home() {
   const { data } = await readUserSession();
@@ -9,5 +9,5 @@ export default async function Home() {
     return redirect('/dashboard');
   }
 
-  return <AuthPage />;
+  return <Login />;
 }

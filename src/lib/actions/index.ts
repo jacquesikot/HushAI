@@ -1,6 +1,8 @@
 import { createClient } from '@/app/utils/supabase/server';
+import ROUTES from '@/constants/route';
 import { SupabaseVectorStore } from '@langchain/community/vectorstores/supabase';
 import { OpenAIEmbeddings } from '@langchain/openai';
+import { redirect } from 'next/navigation';
 
 export const readUserSession = () => {
   const supabase = createClient();

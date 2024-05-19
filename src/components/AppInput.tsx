@@ -1,52 +1,35 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+import Input from './Input';
 
 interface Props {
-  placeholder: string;
-  label: string;
+  type?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  label?: string;
+  width?: number;
   isSecured?: boolean;
-  width?: number; // TODO: change to number
-  type?:  string;
-
 }
-const Wrapper = styled.div``;
+const Wrapper = styled.div<{ width?: number }>`
+  width: ${(props) => (props.width ? `${props.width}px` : '100%')};
+`;
 const LabelText = styled.p`
   color: ${(props) => props.theme.colors.text['text-secondary-(700)'].value};
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
+  letter-spacing: 0.3px;
   margin-bottom: ${(props) => props.theme.spacing['spacing-sm'].value};
-`;
-const Input = styled.input<{ width?: number }>`
-  width: ${(props) => props.width + 'px' || '100%'};
-  border-radius: ${(props) => props.theme.radius['radius-md'].value};
-  border: 1px solid ${(props) => props.theme.colors.border['border-primary'].value};
-  background: ${(props) => props.theme.colors.background['bg-primary'].value};
-  padding: 10px 14px;
-  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: ${(props) => props.theme.colors.text['text-placeholder'].value};
-
-  &:focus {
-    border: 1px solid ${(props) => props.theme.colors.border['border-primary'].value};
-  }
-
-  ::placeholder {
-    color: ${(props) => props.theme.colors.text['text-placeholder'].value};
-  }
 `;
 
 const AppInput = (props: Props) => {
+  const theme = useTheme();
   return (
-    <Wrapper>
-      <LabelText>{props.label}</LabelText>
-      <Input placeholder={props.placeholder} width={props.width} type={props.type} />
+    <Wrapper width={props.width}>
+      <LabelText>{props.label} </LabelText>
+      <Input placeholder={props.placeholder} appTheme={theme} type={props.type} />
     </Wrapper>
   );
 };

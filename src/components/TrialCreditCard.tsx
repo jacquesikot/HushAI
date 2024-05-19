@@ -1,4 +1,4 @@
-import XIcon from '@/appIcons/XIcon';
+import XIcon from '@/icons/XIcon';
 import CircularProgress from '@/components/CircularProgress';
 import styled from 'styled-components';
 

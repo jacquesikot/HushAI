@@ -5,15 +5,20 @@ import StoreProvider from './providers/StoreProvider';
 import ToastProvider from './providers/ToastProvider';
 import { ReactQueryClientProvider } from './providers/ReactQueryClientProvider';
 import ThemeProvider from './providers/ThemeProvider';
+import StyledComponentsRegistry from '@/lib/registry';
+import { inject } from '@vercel/analytics';
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
+inject();
+injectSpeedInsights();
 
 const inter = Inter({
   subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: 'HushAI - Gain insights from your data',
-  description:
-    'Insights from your data, without the noise. HushAI helps you understand your data, without the complexity.',
+  title: 'HushAI - Personalised Learning Experiences',
+  description: 'Providing an accelerated and personalised learning experience',
 };
 
 export default async function RootLayout({
@@ -26,8 +31,10 @@ export default async function RootLayout({
       <StoreProvider>
         <ThemeProvider>
           <html lang="en">
-            <body className={inter.className}>
-              <ToastProvider>{children}</ToastProvider>
+            <body className={inter.className} style={{ margin: 0 }}>
+              <StyledComponentsRegistry>
+                <ToastProvider>{children}</ToastProvider>
+              </StyledComponentsRegistry>
             </body>
           </html>
         </ThemeProvider>
