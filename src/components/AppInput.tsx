@@ -15,7 +15,7 @@ const Wrapper = styled.div<{ width?: number }>`
   width: ${(props) => (props.width ? `${props.width}px` : '100%')};
 `;
 const LabelText = styled.p`
-  color: ${(props) => props.theme.colors.text['text-primary-(900)'].value};
+  color: ${(props) => props.theme.colors.text['text-secondary-(700)'].value};
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -28,7 +28,7 @@ const AppInput = (props: Props) => {
   const theme = useTheme();
   return (
     <Wrapper width={props.width}>
-      <LabelText>{props.label}</LabelText>
+      <LabelText>{props.label} </LabelText>
       <Input placeholder={props.placeholder} appTheme={theme} />
     </Wrapper>
   );

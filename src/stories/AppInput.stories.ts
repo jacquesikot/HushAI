@@ -19,7 +19,7 @@ const meta = {
   args: {
     placeholder: 'This is a test placeholder',
     label: 'Email',
-    width: '360px',
+    width: 360,
     value: '',
     onChange: () => {},
   },
@@ -32,7 +32,7 @@ export const Normal: Story = {
   args: {
     placeholder: 'Enter your email',
     label: 'Email',
-    width: '360px',
+    width: 360,
   },
 };
 
@@ -41,6 +41,6 @@ export const Secured: Story = {
     placeholder: 'Enter your password',
     label: 'Password',
     isSecured: true,
-    width: '360px',
+    width: 360,
   },
 };
