@@ -41,11 +41,18 @@ const StyledParagraph = styled.p`
   cursor: pointer;
 
   a {
-    color: ${(props) => props.theme.colors.text['text-primary-(900)'].value};
+    color: ${(props) => props.theme.colors.text['text-tertiary-(600)'].value};
     text-decoration: none;
     margin-left: ${(props) => props.theme.spacing['spacing-xs'].value};
     font-weight: 600;
   }
+`;
+
+const ErrorText = styled.p`
+  font-size: 12px;
+  color: red;
+  margin: 5px 0 0 0;
+  align-self: flex-start;
 `;
 
 interface RegisterFormProps {
@@ -70,73 +77,101 @@ const RegisterForm = (props: RegisterFormProps) => {
       name?: string;
     } = {};
     if (!email) newErrors.email = 'Email is required';
-    if (!password) newErrors.password = 'Password is required';
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else {
+      if (password.length < 8)
+        newErrors.password = 'Password must be at least 8 characters';
+      if (!/[!@#$%^&*]/.test(password)) {
+        newErrors.password = newErrors.password
+          ? `${newErrors.password} and contain one special character`
+          : 'Password must contain one special character';
+      }
+    }
     if (!name) newErrors.name = 'Name is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleRegister = () => {
     if (validate()) {
       // Handle registration logic here
       console.log('Registered with:', { email, password, name });
     }
   };
 
-  const hasMinLength = password.length >= 8;
-  const hasSpecialChar = /[!@#$%^&*]/.test(password);
-
   return (
     <Wrapper>
       <InputWrapper>
         <AppInput
-          type="text"
+          type='text'
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Enter your name"
-          label="Name*"
+          placeholder='Enter your name'
+          label='Name*'
           width={360}
         />
+        {errors.name && <ErrorText>{errors.name}</ErrorText>}
         <AppInput
-          type="email"
+          type='email'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          label="Email*"
+          placeholder='Enter your email'
+          label='Email*'
         />
+        {errors.email && <ErrorText>{errors.email}</ErrorText>}
         <AppInput
-          type="password"
+          type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Create a password"
-          label="Password*"
+          placeholder='Create a password'
+          label='Password*'
           isSecured
         />
+        {errors.password && <ErrorText>{errors.password}</ErrorText>}
       </InputWrapper>
 
       <CheckboxContainer>
-        <AuthCheckbox style={{ marginRight: theme.spacing['spacing-md'].value }} />
-        <StyledParagraph>Password must be at least 8 characters</StyledParagraph>
+        <AuthCheckbox
+          style={{ marginRight: theme.spacing['spacing-md'].value }}
+        />
+        <StyledParagraph>
+          Password must be at least 8 characters
+        </StyledParagraph>
       </CheckboxContainer>
       <CheckboxContainer
-        style={{ marginTop: theme.spacing['spacing-lg'].value, marginBottom: theme.spacing['spacing-3xl'].value }}
+        style={{
+          marginTop: theme.spacing['spacing-lg'].value,
+          marginBottom: theme.spacing['spacing-3xl'].value,
+        }}
       >
-        <AuthCheckbox style={{ marginRight: theme.spacing['spacing-md'].value }} />
-        <StyledParagraph>Password must contain one special character</StyledParagraph>
+        <AuthCheckbox
+          style={{ marginRight: theme.spacing['spacing-md'].value }}
+        />
+        <StyledParagraph>
+          Password must contain one special character
+        </StyledParagraph>
       </CheckboxContainer>
-      <AppButton label="Register" onClick={() => true} type="primary" width={'100%'} />
+      <AppButton
+        label='Register'
+        onClick={handleRegister}
+        type='primary'
+        width={'100%'}
+      />
       <AppButton
         style={{ marginTop: theme.spacing['spacing-xl'].value }}
         icon={<GoogleIcon />}
-        label="Sign up with Google"
+        label='Sign up with Google'
         onClick={() => true}
-        type="secondary"
+        type='secondary'
         width={'100%'}
       />
 
-      <StyledParagraph onClick={props.handleClickLogin} style={{ marginTop: theme.spacing['spacing-2xl'].value }}>
-        Already have an account? <a href="#">Login</a>
+      <StyledParagraph
+        onClick={props.handleClickLogin}
+        style={{ marginTop: theme.spacing['spacing-2xl'].value }}
+      >
+        Already have an account? <a href='#'>Login</a>
       </StyledParagraph>
     </Wrapper>
   );
