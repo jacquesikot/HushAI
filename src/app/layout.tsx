@@ -5,6 +5,7 @@ import StoreProvider from './providers/StoreProvider';
 import ToastProvider from './providers/ToastProvider';
 import { ReactQueryClientProvider } from './providers/ReactQueryClientProvider';
 import ThemeProvider from './providers/ThemeProvider';
+import StyledComponentsRegistry from '@/lib/registry';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -27,7 +28,9 @@ export default async function RootLayout({
         <ThemeProvider>
           <html lang="en">
             <body className={inter.className}>
-              <ToastProvider>{children}</ToastProvider>
+              <StyledComponentsRegistry>
+                <ToastProvider>{children}</ToastProvider>
+              </StyledComponentsRegistry>
             </body>
           </html>
         </ThemeProvider>

@@ -115,16 +115,16 @@ export const createConversationMessage = async (convo: { chat_id: string; messag
     .throwOnError();
 
   const chatContext = await getChatContexts(convo.chat_id);
-  const llm = new ChatOpenAI();
-  const prompt = new PromptTemplate({
-    template: prompts.inquiryTemplate,
-    inputVariables: ['userPrompt'],
-  });
-  const inquiryChain = prompt.pipe(llm);
-  const inquiryChainResult = await inquiryChain.invoke({
-    userPrompt: convo.message,
-  });
-  const inquiry = inquiryChainResult.content;
+  // const llm = new ChatOpenAI();
+  // const prompt = new PromptTemplate({
+  //   template: prompts.inquiryTemplate,
+  //   inputVariables: ['userPrompt'],
+  // });
+  // const inquiryChain = prompt.pipe(llm);
+  // const inquiryChainResult = await inquiryChain.invoke({
+  //   userPrompt: convo.message,
+  // });
+  // const inquiry = inquiryChainResult.content;
 
   if (!chatContext || chatContext.length < 1) {
     return await supabase
@@ -191,7 +191,6 @@ export const createConversationMessage = async (convo: { chat_id: string; messag
       question: convo.message,
       context: docs.join('\n'),
     });
-    console.log('🚀 ~ createConversationMessage ~ docs', docs.join('\n'));
     await supabase
       .from('conversation')
       .insert({

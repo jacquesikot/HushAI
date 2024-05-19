@@ -47,6 +47,14 @@ const Subtitle = styled.p`
 
 export default function Register() {
   const [isPending, startTransition] = useTransition();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    name?: string;
+  }>({});
   const theme = useTheme();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -61,39 +69,6 @@ export default function Register() {
       }
     });
   };
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    name?: string;
-  }>({});
-
-  const validate = () => {
-    const newErrors: {
-      email?: string;
-      password?: string;
-      name?: string;
-    } = {};
-    if (!email) newErrors.email = 'Email is required';
-    if (!password) newErrors.password = 'Password is required';
-    if (!name) newErrors.name = 'Name is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   if (validate()) {
-  //     // Handle registration logic here
-  //     console.log('Registered with:', { email, password, name });
-  //   }
-  // };
-
-  const hasMinLength = password.length >= 8;
-  const hasSpecialChar = /[!@#$%^&*]/.test(password);
 
   if (isPending) {
     return (
@@ -112,7 +87,6 @@ export default function Register() {
 
   return (
     <Wrapper>
-      {/* <Image src={authPatterSvg} alt="auth-pattern" /> */}
       <AppLogo style={{ marginBottom: theme.spacing['spacing-3xl'].value }} />
       <HeaderText>Create an account</HeaderText>
       <Subtitle>Start your 7 day free trial</Subtitle>
