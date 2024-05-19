@@ -30,7 +30,7 @@ export default async function RootLayout({
       <StoreProvider>
         <ThemeProvider>
           <html lang="en">
-            <body className={inter.className}>
+            <body className={inter.className} style={{ margin: 0 }}>
               <StyledComponentsRegistry>
                 <ToastProvider>{children}</ToastProvider>
               </StyledComponentsRegistry>
