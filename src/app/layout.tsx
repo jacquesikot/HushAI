@@ -17,9 +17,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'HushAI - Gain insights from your data',
-  description:
-    'Insights from your data, without the noise. HushAI helps you understand your data, without the complexity.',
+  title: 'HushAI - Personalised Learning Experiences',
+  description: 'Providing an accelerated and personalised learning experience',
 };
 
 export default async function RootLayout({
