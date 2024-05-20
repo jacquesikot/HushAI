@@ -121,7 +121,7 @@ const LoginForm = (props: LoginFormProps) => {
       />
 
       <StyledParagraph onClick={props.handleClickRegister} style={{ marginTop: theme.spacing['spacing-2xl'].value }}>
-        Don't have an account? <a href="#">Sign up</a>
+        Do not have an account? <a href="#">Sign up</a>
       </StyledParagraph>
     </Wrapper>
   );
