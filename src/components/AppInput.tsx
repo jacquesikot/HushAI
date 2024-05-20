@@ -29,7 +29,7 @@ const AppInput = (props: Props) => {
   return (
     <Wrapper width={props.width}>
       <LabelText>{props.label} </LabelText>
-      <Input placeholder={props.placeholder} appTheme={theme} />
+      <Input placeholder={props.placeholder} apptheme={theme} />
     </Wrapper>
   );
 };
