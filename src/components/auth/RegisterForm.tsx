@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import AppInput from '../AppInput';
 import AuthCheckbox from '@/icons/AuthCheckbox';
@@ -56,83 +56,64 @@ const ErrorText = styled.p`
 `;
 
 interface RegisterFormProps {
+  email: string;
+  name: string;
+  password: string;
+  setPassword: (password: string) => void;
+  setName: (name: string) => void;
+  setEmail: (email: string) => void;
   handleClickLogin: () => void;
+  handleRegister: () => void;
+  errors: {
+    email?: string;
+    password?: string;
+    name?: string;
+  };
 }
 
 const RegisterForm = (props: RegisterFormProps) => {
   const theme = useTheme();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    name?: string;
-  }>({});
-
-  const validate = () => {
-    const newErrors: {
-      email?: string;
-      password?: string;
-      name?: string;
-    } = {};
-    if (!email) newErrors.email = 'Email is required';
-    if (!password) {
-      newErrors.password = 'Password is required';
-    } else {
-      if (password.length < 8) newErrors.password = 'Password must be at least 8 characters';
-      if (!/[!@#$%^&*]/.test(password)) {
-        newErrors.password = newErrors.password
-          ? `${newErrors.password} and contain one special character`
-          : 'Password must contain one special character';
-      }
-    }
-    if (!name) newErrors.name = 'Name is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleRegister = () => {
-    if (validate()) {
-      // Handle registration logic here
-      console.log('Registered with:', { email, password, name });
-    }
-  };
 
   return (
     <Wrapper>
       <InputWrapper>
         <AppInput
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter your name"
-          label="Name*"
+          type='text'
+          value={props.name}
+          onChange={(e) => props.setName(e.target.value)}
+          placeholder='Enter your name'
+          label='Name*'
           width={360}
         />
-        {errors.name && <ErrorText>{errors.name}</ErrorText>}
+        {props.errors.name && <ErrorText>{props.errors.name}</ErrorText>}
         <AppInput
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          label="Email*"
+          type='email'
+          value={props.email}
+          onChange={(e) => props.setEmail(e.target.value)}
+          placeholder='Enter your email'
+          label='Email*'
         />
-        {errors.email && <ErrorText>{errors.email}</ErrorText>}
+        {props.errors.email && <ErrorText>{props.errors.email}</ErrorText>}
         <AppInput
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Create a password"
-          label="Password*"
+          type='password'
+          value={props.password}
+          onChange={(e) => props.setPassword(e.target.value)}
+          placeholder='Create a password'
+          label='Password*'
           isSecured
         />
-        {errors.password && <ErrorText>{errors.password}</ErrorText>}
+        {props.errors.password && (
+          <ErrorText>{props.errors.password}</ErrorText>
+        )}
       </InputWrapper>
 
       <CheckboxContainer>
-        <AuthCheckbox style={{ marginRight: theme.spacing['spacing-md'].value }} />
-        <StyledParagraph>Password must be at least 8 characters</StyledParagraph>
+        <AuthCheckbox
+          style={{ marginRight: theme.spacing['spacing-md'].value }}
+        />
+        <StyledParagraph>
+          Password must be at least 8 characters
+        </StyledParagraph>
       </CheckboxContainer>
       <CheckboxContainer
         style={{
@@ -140,21 +121,33 @@ const RegisterForm = (props: RegisterFormProps) => {
           marginBottom: theme.spacing['spacing-3xl'].value,
         }}
       >
-        <AuthCheckbox style={{ marginRight: theme.spacing['spacing-md'].value }} />
-        <StyledParagraph>Password must contain one special character</StyledParagraph>
+        <AuthCheckbox
+          style={{ marginRight: theme.spacing['spacing-md'].value }}
+        />
+        <StyledParagraph>
+          Password must contain one special character
+        </StyledParagraph>
       </CheckboxContainer>
-      <AppButton label="Register" onClick={handleRegister} type="primary" width={'100%'} />
+      <AppButton
+        label='Register'
+        onClick={props.handleRegister}
+        type='primary'
+        width={'100%'}
+      />
       <AppButton
         style={{ marginTop: theme.spacing['spacing-xl'].value }}
         icon={<GoogleIcon />}
-        label="Sign up with Google"
+        label='Sign up with Google'
         onClick={() => true}
-        type="secondary"
+        type='secondary'
         width={'100%'}
       />
 
-      <StyledParagraph onClick={props.handleClickLogin} style={{ marginTop: theme.spacing['spacing-2xl'].value }}>
-        Already have an account? <a href="#">Login</a>
+      <StyledParagraph
+        onClick={props.handleClickLogin}
+        style={{ marginTop: theme.spacing['spacing-2xl'].value }}
+      >
+        Already have an account? <a href='#'>Login</a>
       </StyledParagraph>
     </Wrapper>
   );

@@ -10,7 +10,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     type: { control: 'text' },
-    value: { control: 'text' },
+    // value: { control: 'text' },
     placeholder: { control: 'text' },
     label: { control: 'text' },
     width: { control: 'text' },
