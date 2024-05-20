@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-
 import { login, navigateToLogin } from './actions';
 import { useTransition } from 'react';
 import { CircularProgress } from '@mui/material';
@@ -12,12 +11,19 @@ import RegisterForm from '@/components/auth/RegisterForm';
 import AppLogo from '@/icons/AppLogo';
 import authPatterSvg from '../../../public/images/auth-grid-bg.svg';
 
+type ErrorMessages = {
+  email?: string;
+  password?: string;
+  name?: string;
+};
+
 const Wrapper = styled.div`
   background-image: url(${authPatterSvg.src});
   background-repeat: no-repeat;
   background-position: top;
   background-size: 700px 700px;
-  background-color: ${(props) => props.theme.colors.background['bg-primary'].value};
+  background-color: ${(props) =>
+    props.theme.colors.background['bg-primary'].value};
   width: 100%;
   height: 100vh;
   justify-content: center;
@@ -50,21 +56,52 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    name?: string;
-  }>({});
+  const [errors, setErrors] = useState<ErrorMessages>({});
   const theme = useTheme();
 
+  const validate = (): boolean => {
+    const newErrors: ErrorMessages = {};
+
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else {
+      if (password.length < 8) {
+        newErrors.password = 'Password must be at least 8 characters';
+      }
+      if (!/[!@#$%^&*]/.test(password)) {
+        newErrors.password = 'Password must contain one special character';
+      }
+    }
+
+    if (!name) {
+      newErrors.name = 'Name is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleRegister = () => {
+    if (validate()) {
+      // Handle registration logic here
+      console.log('Registered with:', { email, password, name });
+    }
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     startTransition(async () => {
       try {
-        event.preventDefault();
         const data = new FormData(event.currentTarget);
         await login(data);
       } catch (error: any) {
-        console.log(error);
+        console.error(error);
         toast.error(error.message);
       }
     });
@@ -90,7 +127,17 @@ export default function Register() {
       <AppLogo style={{ marginBottom: theme.spacing['spacing-3xl'].value }} />
       <HeaderText>Create an account</HeaderText>
       <Subtitle>Start your 7 day free trial</Subtitle>
-      <RegisterForm handleClickLogin={() => navigateToLogin()} />
+      <RegisterForm
+        password={password}
+        setPassword={setPassword}
+        name={name}
+        setName={setName}
+        email={email}
+        setEmail={setEmail}
+        handleClickLogin={() => navigateToLogin()}
+        handleRegister={handleRegister}
+        errors={errors}
+      />
     </Wrapper>
   );
 }
