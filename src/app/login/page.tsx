@@ -10,6 +10,12 @@ import styled, { useTheme } from 'styled-components';
 import AppLogo from '@/icons/AppLogo';
 import authPatterSvg from '../../../public/images/auth-grid-bg.svg';
 import LoginForm from '@/components/auth/LoginForm';
+import { login, navigateToRegister } from './actions';
+
+type ErrorMessages = {
+  email?: string;
+  password?: string;
+};
 
 const Wrapper = styled.div`
   background-image: url(${authPatterSvg.src});
@@ -47,13 +53,49 @@ const Subtitle = styled.p`
 export default function Login() {
   const [isPending, startTransition] = useTransition();
   const theme = useTheme();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<ErrorMessages>({});;
+
+
+  const validate = (): boolean => {
+    const newErrors: ErrorMessages = {};
+
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else {
+      if (password.length < 8) {
+        newErrors.password = 'Password must be at least 8 characters';
+      }
+      if (!/[!@#$%^&*]/.test(password)) {
+        newErrors.password = 'Password must contain one special character';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleLogin = () => {
+    if (validate()) {
+      // Handle registration logic here
+      console.log('Signed in with:', { email, password });
+    }
+  };
+
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     startTransition(async () => {
       try {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // await login(data);
+        await login(data);
       } catch (error: any) {
         console.log(error);
         toast.error(error.message);
@@ -61,14 +103,6 @@ export default function Login() {
     });
   };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    name?: string;
-  }>({});
 
   if (isPending) {
     return (
@@ -91,7 +125,15 @@ export default function Login() {
       <AppLogo style={{ marginBottom: theme.spacing['spacing-3xl'].value }} />
       <HeaderText>Login in to your account</HeaderText>
       <Subtitle>Welcome back! Please enter your details.</Subtitle>
-      <LoginForm handleClickRegister={()=>true}  />
+      <LoginForm 
+       password={password}
+       setPassword={setPassword}
+       email={email}
+       setEmail={setEmail}
+       handleClickRegister={()=> navigateToRegister()}
+       handleLogin={handleLogin}
+       errors={errors}
+       />
     </Wrapper>
   );
 }

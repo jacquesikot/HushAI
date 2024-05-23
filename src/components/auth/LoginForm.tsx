@@ -50,78 +50,41 @@ const ErrorText = styled.p`
 `;
 
 interface LoginFormProps {
+  email: string;
+  password: string;
+  setPassword: (password: string) => void;
+  setEmail: (email: string) => void;
   handleClickRegister: () => void;
+  handleLogin: () => void;
+  errors: {
+    email?: string;
+    password?: string;
+  };
 }
 
 const LoginForm = (props: LoginFormProps) => {
   const theme = useTheme();
-  const router = useRouter();
-  const supabase = createClient(); // Create the Supabase client
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    general?: string;
-  }>({});
-
-  const handleLogin = async (event: React.FormEvent) => {
-    event.preventDefault();
-    let valid = true;
-
-    const newErrors: { email?: string; password?: string; general?: string } = {};
-
-    if (!email.includes("@")) {
-      newErrors.email = "Please enter a valid email address";
-      valid = false;
-    }
-
-    if (!password) {
-      newErrors.password = "Password is required";
-      valid = false;
-    }
-
-    setErrors(newErrors);
-
-    if (!valid) return;
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        throw error;
-      } else {
-        router.push("/dashboard");
-      }
-    } catch (error: any) {
-      setErrors({ ...errors, general: error.message });
-    }
-  };
 
   return (
     <Wrapper>
       <InputWrapper>
         <AppInput
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={props.email}
+          onChange={(e) => props.setEmail(e.target.value)}
           placeholder="Enter your email"
           label="Email*"
         />
-        {errors.email && <ErrorText>{errors.email}</ErrorText>}
+        {props.errors.email && <ErrorText>{props.errors.email}</ErrorText>}
         <AppInput
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={props.password}
+          onChange={(e) => props.setPassword(e.target.value)}
           placeholder="Create a password"
           label="Password*"
           isSecured
         />
-        {errors.password && <ErrorText>{errors.password}</ErrorText>}
+        {props.errors.password && <ErrorText>{props.errors.password}</ErrorText>}
       </InputWrapper>
 
       <StyledParagraph
@@ -136,7 +99,7 @@ const LoginForm = (props: LoginFormProps) => {
 
       <AppButton
         label="Sign in"
-        onClick={handleLogin}
+        onClick={props.handleLogin}
         type="primary"
         width={"100%"}
       />
