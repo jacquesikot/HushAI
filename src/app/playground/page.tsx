@@ -1,7 +1,8 @@
+import PlaygroundPage from '@/pages/PlaygroundPage';
 import React from 'react';
 
 const Playground = () => {
-  return <div>Playground</div>;
+  return <PlaygroundPage />;
 };
 
 export default Playground;
