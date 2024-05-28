@@ -39,7 +39,7 @@ export const signInAnonymousUser = async () => {
     const { data } = await supabaseAdminClient.auth.signInAnonymously({
       options: {
         data: {
-          someData: '1234343453',
+          someData: '12345',
         },
       },
     });

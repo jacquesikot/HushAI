@@ -1,7 +1,6 @@
 import PlaygroundPage from '@/pages/PlaygroundPage';
 import React from 'react';
-import { createDefaultChat, fetchUserMessages, signInAnonymousUser } from './action';
-import { ChatMessage } from '@/types';
+import { signInAnonymousUser } from './action';
 
 const Playground = async () => {
   const anonData = await signInAnonymousUser();

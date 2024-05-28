@@ -7,7 +7,6 @@ import { PromptTemplate } from '@langchain/core/prompts';
 
 import { createClient } from '../utils/supabase/server';
 import { Chat } from '@/redux/reducers/chatReducer';
-import { prompts } from '@/templates/prompts';
 import { MetaData, getMatchFromEmbeddings } from '@/lib/actions';
 
 export async function logout() {
@@ -177,7 +176,7 @@ export const createConversationMessage = async (convo: { chat_id: string; messag
       ).map(([_, text]: any) => text);
 
     const promptTemplate = new PromptTemplate({
-      template: prompts.simplePrompt,
+      template: ``,
       inputVariables: ['question', 'context'],
     });
 
