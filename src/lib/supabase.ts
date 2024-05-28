@@ -8,11 +8,6 @@ if (!supabaseUrl) throw new Error(`Expected env var PUBLIC_SUPABASE_URL`);
 
 const supabaseAdminClient = createClient(supabaseUrl, supabasePrivateKey, {
   auth: { persistSession: false },
-  realtime: {
-    params: {
-      eventsPerSecond: -1,
-    },
-  },
 });
 
 export { supabaseAdminClient };

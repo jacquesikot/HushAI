@@ -6,7 +6,7 @@ export const getMatchesFromEmbeddings = async (
   inquiry: string,
   topK: number = 2,
   contextId: string,
-  fileId: string
+  fileId?: string
 ) => {
   const embeddings = new OpenAIEmbeddings();
 

@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import sendMessageIcon from '../../../public/send-message-icon.svg';
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   margin: ${(props) => props.theme.spacing['spacing-2xl'].value};
   display: flex;
   height: 104px;
@@ -30,7 +30,8 @@ const ChatInputField = styled.textarea`
     outline: none;
   }
 `;
-const SendButtonContainer = styled.div`
+const SendButtonContainer = styled.button`
+  border: none;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -45,16 +46,16 @@ const SendButtonContainer = styled.div`
 interface Props {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onClickSend: () => void;
+  onClickSend: any;
 }
 
 const ChatInput = ({ value, onChange, onClickSend }: Props) => {
   return (
-    <Wrapper>
-      <ChatInputField placeholder="Send a message" value={value} onChange={onChange} />
+    <Wrapper onSubmit={onClickSend}>
+      <ChatInputField placeholder="Send a message" value={value} onChange={onChange} itemType="text" />
 
-      <SendButtonContainer>
-        <Image src={sendMessageIcon} alt="Learn ICT send message icon" onClick={onClickSend} />
+      <SendButtonContainer type="submit">
+        <Image src={sendMessageIcon} alt="Learn ICT send message icon" />
       </SendButtonContainer>
     </Wrapper>
   );

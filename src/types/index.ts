@@ -5,4 +5,5 @@ export interface ChatMessage {
   entry: string;
   speaker: 'user' | 'ai';
   chat_id?: string;
+  isLoading?: boolean;
 }
