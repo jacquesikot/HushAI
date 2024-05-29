@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'HushAI - Personalised Learning Experiences',
+  title: 'Learn ICT - Accelerated ICT Forex Learning Platform',
   description: 'Providing an accelerated and personalised learning experience',
 };
 
