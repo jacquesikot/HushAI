@@ -63,32 +63,75 @@ const PlaygroundPage = (props: Props) => {
       userId: props.userId,
       chatId: props.chatId.toString(),
     },
-    onError: (e) => {},
+    onError: (e) => {
+      // Empty error handler function. Add error handling logic here if needed.
+    },
     onResponse: async (data) => {
+      // Asynchronously handle the response from the API.
+    
       const reader = data.body?.getReader() as any;
+      // Get a reader from the response body to read the stream of data.
+      // The ?. (optional chaining) ensures that this is done only if data.body is not null or undefined.
+      // The "as any" is used to bypass TypeScript's strict type checking.
+    
       const decoder = new TextDecoder();
+      // Create a TextDecoder to decode bytes into text.
+    
       let done = false;
+      // Initialize a boolean variable to control the reading loop.
+    
       while (!done) {
+        // Loop until the stream is fully read (done is true).
+    
         const { value, done: doneReading } = await reader.read();
+        // Read the next chunk of data from the stream.
+        // Await the promise returned by reader.read(), which resolves to an object with 'value' (the data chunk) and 'done' (boolean indicating if the stream is finished).
+    
         done = doneReading;
+        // Update the done variable. If doneReading is true, the loop will terminate.
+    
         const chunk = decoder.decode(value, { stream: true });
+        // Decode the chunk of bytes into a string using the TextDecoder.
+        // The { stream: true } option allows streaming decoding.
+    
         console.log('🚀 ~ onResponse: ~ chunk:', chunk);
+        // Log the decoded chunk to the console for debugging purposes.
+    
         const chunkData = chunk.split(':"')[1]?.slice(0, -1) ?? '';
-
+        // Process the chunk to extract the relevant data.
+        // Split the string at ':"' and take the second part (index 1).
+        // Remove the last character using slice(0, -1).
+        // If the result is undefined or null, use an empty string as the default value.
+    
         const updatedMessages = [...chatMessagesRef.current];
+        // Create a copy of the current chat messages array.
+        // Use the spread operator (...) to avoid directly mutating the state.
+    
         const index = updatedMessages.findIndex((msg) => msg.id === currentAiChatRef?.current?.id);
-
+        // Find the index of the current AI chat message in the updatedMessages array.
+        // Use findIndex() to search for the message with the same id as currentAiChatRef.current?.id.
+    
         if (index !== -1) {
+          // If the AI chat message is found in the array (index is not -1),
+    
           updatedMessages[index] = {
             ...updatedMessages[index],
+            // Spread the existing properties of the message to retain them.
+    
             entry: updatedMessages[index].entry + chunkData,
+            // Append the new chunkData to the existing entry property.
+    
             isLoading: false,
+            // Set isLoading to false to indicate that the message is fully loaded.
           };
         }
-
+    
         setChatMessages(updatedMessages);
+        // Update the state of chat messages with the new array of updated messages.
+        // This triggers a re-render of the component to display the updated messages.
       }
     },
+    
   });
 
   return (
