@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 
 import { useTransition } from 'react';
 import { CircularProgress } from '@mui/material';
-import { toast } from 'react-toastify';
 import styled, { useTheme } from 'styled-components';
 import AppLogo from '@/icons/AppLogo';
 import authPatterSvg from '../../../public/images/auth-grid-bg.svg';
@@ -56,7 +55,7 @@ export default function Login() {
         // await login(data);
       } catch (error: any) {
         console.log(error);
-        toast.error(error.message);
+        // toast.error(error.message);
       }
     });
   };
@@ -91,7 +90,7 @@ export default function Login() {
       <AppLogo style={{ marginBottom: theme.spacing['spacing-3xl'].value }} />
       <HeaderText>Login in to your account</HeaderText>
       <Subtitle>Welcome back! Please enter your details.</Subtitle>
-      <LoginForm handleClickRegister={()=>true}  />
+      <LoginForm handleClickRegister={() => true} />
     </Wrapper>
   );
 }

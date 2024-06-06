@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import { login, navigateToLogin } from './actions';
 import { useTransition } from 'react';
 import { CircularProgress } from '@mui/material';
-import { toast } from 'react-toastify';
 import styled, { useTheme } from 'styled-components';
 import RegisterForm from '@/components/auth/RegisterForm';
 import AppLogo from '@/icons/AppLogo';
@@ -22,8 +21,7 @@ const Wrapper = styled.div`
   background-repeat: no-repeat;
   background-position: top;
   background-size: 700px 700px;
-  background-color: ${(props) =>
-    props.theme.colors.background['bg-primary'].value};
+  background-color: ${(props) => props.theme.colors.background['bg-primary'].value};
   width: 100%;
   height: 100vh;
   justify-content: center;
@@ -102,7 +100,7 @@ export default function Register() {
         await login(data);
       } catch (error: any) {
         console.error(error);
-        toast.error(error.message);
+        // toast.error(error.message);
       }
     });
   };

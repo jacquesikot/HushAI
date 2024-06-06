@@ -19,7 +19,6 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Chat, setActiveChat } from '@/redux/reducers/chatReducer';
-import { toast } from 'react-toastify';
 import useChatQuery from '@/hooks/useChatQuery';
 import useChatMutation from '@/hooks/useChatMutation';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
@@ -76,7 +75,7 @@ const ChatUI = (props: ChatManager) => {
   const handleLogout = async (e: any) => {
     e.preventDefault();
     await props.logout();
-    toast.success('Logged out');
+    // toast.success('Logged out');
   };
   const handleAddContext = async (context: any) => {
     addContextMutation.mutate({
