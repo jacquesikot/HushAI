@@ -5755,7 +5755,6 @@ __metadata:
     react-dom: ^18
     react-markdown: ^9.0.1
     react-redux: ^9.1.2
-    react-toastify: ^10.0.5
     rehype-katex: ^7.0.0
     remark-math: ^6.0.0
     storybook: ^8.1.1
@@ -13685,18 +13684,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 7ee8ef3aab74c7ae1d70ff34a27643d11ba1a8d62d072c767827d9ff9a520905223e567002e0bf6c772929d8ea1c781a3ba0cc4a563e92b1e3dc2eaa817ecbe8
-  languageName: node
-  linkType: hard
-
-"react-toastify@npm:^10.0.5":
-  version: 10.0.5
-  resolution: "react-toastify@npm:10.0.5"
-  dependencies:
-    clsx: ^2.1.0
-  peerDependencies:
-    react: ">=18"
-    react-dom: ">=18"
-  checksum: 982d33918c63e99464623a1b3b023ab5fe18fe341143cb0cb04287e37fd0611c560d9ef451e151ac8ade15a1cda09df09d4c442b3db582965d71aaf42d49b230
   languageName: node
   linkType: hard
 

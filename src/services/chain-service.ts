@@ -83,7 +83,7 @@ export const generateEfficientInquiryChain = async (userPrompt: string, conversa
     const inquiryChain = prompt.pipe(llm) as any;
     const inquiryChainResult = await inquiryChain.invoke({
       userPrompt,
-      conversationHistory,
+      conversationHistory: '',
     });
     const inquiry = inquiryChainResult.content;
     return inquiry;
@@ -92,7 +92,7 @@ export const generateEfficientInquiryChain = async (userPrompt: string, conversa
   }
 };
 
-export const answerUserQuestionStreamChain = async (
+export const answerUserQuestionChain = async (
   optimisedUserInquiry: string,
   conversationHistory: string,
   contextId: string
@@ -101,35 +101,16 @@ export const answerUserQuestionStreamChain = async (
   const documentTexts = getTextFromMatches(matchesFromInquiry);
 
   const promptTemplate = new PromptTemplate({
-    template: prompts.promptTemplate,
-    inputVariables: ['conversationHistory', 'userPrompt', 'context'],
+    template: prompts.promptTemplate2,
+    inputVariables: ['userPrompt', 'context'],
   });
 
-  const chatLLM = new ChatOpenAI({ model: 'gpt-4o', streaming: true }) as any;
+  const chatLLM = new ChatOpenAI({ model: 'gpt-4o', temperature: 0.1 }) as any;
 
-  /**
-   * Chat models stream message chunks rather than bytes, so this
-   * output parser handles serialization and encoding.
-   */
-  const parser = new HttpResponseOutputParser();
-  const chain = RunnableSequence.from([
-    {
-      userPrompt: (input) => input.userPrompt,
-      conversationHistory: (input) => input.conversationHistory,
-      context: (input) => input.context,
-    },
-    promptTemplate,
-    chatLLM,
-    parser,
-  ]);
-
-  // Convert the response into a friendly text-stream
-  const stream = await chain.stream({
-    conversationHistory,
+  const chain = promptTemplate.pipe(chatLLM) as any;
+  const response = await chain.invoke({
     userPrompt: optimisedUserInquiry,
     context: documentTexts.join('\n'),
   });
-
-  // Respond with the stream
-  return new StreamingTextResponse(stream.pipeThrough(createStreamDataTransformer()));
+  return response;
 };

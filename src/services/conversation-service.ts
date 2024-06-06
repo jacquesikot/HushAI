@@ -1,11 +1,11 @@
 import { supabaseAdminClient } from '@/lib/supabase';
 
-export const newMessage = async (entry: string, userId: string, chatId: string) => {
+export const newMessage = async (entry: string, userId: string, chatId: string, speaker: 'user' | 'ai') => {
   try {
     const { data } = await supabaseAdminClient
       .from('conversation')
       .insert({
-        speaker: 'user',
+        speaker: speaker,
         user_id: userId,
         chat_id: chatId,
         entry,

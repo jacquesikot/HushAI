@@ -1,12 +1,13 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useChat } from 'ai/react';
+import { useState, useEffect, useRef } from 'react';
 import ChatHeader from '@/components/chat/ChatHeader';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatMessage from '@/components/chat/ChatMessage';
 import type { ChatMessage as IChatMessage } from '@/types';
 import styled from 'styled-components';
+import useConversationQuery from '@/hooks/useConversationQuery';
+import { set } from 'date-fns';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -43,53 +44,95 @@ const ChatMessageContainer = styled.div`
 `;
 
 interface Props {
-  messages: IChatMessage[];
   userId: string;
   chatId: string;
 }
 
 const PlaygroundPage = (props: Props) => {
-  const [chatMessages, setChatMessages] = useState<IChatMessage[]>(props.messages);
+  const { data: userChatMessages, isLoading, isError, refetch } = useConversationQuery(props.userId);
+  const [chatMessages, setChatMessages] = useState<IChatMessage[]>(userChatMessages || []);
+  const [input, setInput] = useState<string>('');
   const [currentAIChat, setCurrentAIChat] = useState<IChatMessage | null>(null);
 
-  const chatMessagesRef = useRef(chatMessages);
-  const currentAiChatRef = useRef(currentAIChat);
-  chatMessagesRef.current = chatMessages;
-  currentAiChatRef.current = currentAIChat;
+  // Create a reference for the chat message container
+  const chatMessageContainerRef = useRef<HTMLDivElement>(null);
 
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: 'api/chat',
-    body: {
-      userId: props.userId,
-      chatId: props.chatId.toString(),
-    },
-    onError: (e) => {},
-    onResponse: async (data) => {
-      const reader = data.body?.getReader() as any;
-      const decoder = new TextDecoder();
-      let done = false;
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunk = decoder.decode(value, { stream: true });
-        console.log('🚀 ~ onResponse: ~ chunk:', chunk);
-        const chunkData = chunk.split(':"')[1]?.slice(0, -1) ?? '';
+  // Function to scroll to bottom
+  const scrollToBottom = () => {
+    if (chatMessageContainerRef.current) {
+      chatMessageContainerRef.current.scrollTop = chatMessageContainerRef.current.scrollHeight;
+    }
+  };
 
-        const updatedMessages = [...chatMessagesRef.current];
-        const index = updatedMessages.findIndex((msg) => msg.id === currentAiChatRef?.current?.id);
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
 
-        if (index !== -1) {
-          updatedMessages[index] = {
-            ...updatedMessages[index],
-            entry: updatedMessages[index].entry + chunkData,
-            isLoading: false,
-          };
-        }
+  useEffect(() => {
+    if (userChatMessages) {
+      setChatMessages(userChatMessages);
+    }
+  }, [userChatMessages]);
 
-        setChatMessages(updatedMessages);
-      }
-    },
-  });
+  const handleSendMessage = async () => {
+    if (input.length === 0) {
+      return;
+    }
+
+    const newMessage: IChatMessage = {
+      id: Math.random().toString(36).substring(2, 9),
+      entry: input,
+      isLoading: false,
+      created_at: new Date().toISOString(),
+      speaker: 'user',
+      user_id: props.userId,
+    };
+
+    const aiLoadingPlaceholderMessage: IChatMessage = {
+      id: Math.random().toString(36).substring(2, 9),
+      entry: '',
+      isLoading: true,
+      created_at: new Date().toISOString(),
+      speaker: 'ai',
+      user_id: props.userId,
+    };
+
+    setChatMessages([...chatMessages, newMessage, aiLoadingPlaceholderMessage]);
+    setInput('');
+    setCurrentAIChat(aiLoadingPlaceholderMessage);
+
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: props.userId,
+        chatId: props.chatId,
+        messages: [
+          {
+            content: input,
+          },
+        ],
+      }),
+    });
+
+    const data = await res.json();
+
+    const updatedMessages = [...chatMessages];
+    const index = updatedMessages.findIndex((msg) => msg.id === currentAIChat?.id);
+
+    if (index !== -1) {
+      updatedMessages[index] = {
+        ...updatedMessages[index],
+        entry: data.content,
+        isLoading: false,
+      };
+    }
+
+    setChatMessages(updatedMessages);
+    refetch();
+  };
 
   return (
     <PageWrapper>
@@ -100,45 +143,25 @@ const PlaygroundPage = (props: Props) => {
       <ChatSection>
         <ChatHeader headerText="Your Inner Circle Trader AI Companion" />
 
-        <ChatMessageContainer>
-          {chatMessages.map((chat) => (
-            <ChatMessage
-              key={chat.id}
-              message={chat.entry}
-              loading={chat.isLoading || false}
-              time={chat.created_at}
-              speaker={chat.speaker}
-            />
-          ))}
+        <ChatMessageContainer ref={chatMessageContainerRef}>
+          {isLoading ? (
+            <div>
+              <h5>Loading...</h5>
+            </div>
+          ) : (
+            chatMessages.map((chat) => (
+              <ChatMessage
+                key={chat.id}
+                message={chat.entry}
+                loading={chat.isLoading || false}
+                time={chat.created_at}
+                speaker={chat.speaker}
+              />
+            ))
+          )}
         </ChatMessageContainer>
 
-        <ChatInput
-          value={input}
-          onChange={(e) => handleInputChange(e)}
-          onClickSend={(e: any) => {
-            e.preventDefault();
-            const newMessage: IChatMessage = {
-              entry: input,
-              created_at: new Date().toISOString(),
-              id: Math.random().toString(),
-              speaker: 'user',
-              user_id: props.userId,
-            };
-
-            const aiLoadingPlaceholder: IChatMessage = {
-              entry: '',
-              created_at: new Date().toISOString(),
-              id: Math.random().toString(),
-              speaker: 'ai',
-              user_id: '0',
-              isLoading: true,
-            };
-
-            setCurrentAIChat(aiLoadingPlaceholder);
-            setChatMessages([...chatMessages, newMessage, aiLoadingPlaceholder]);
-            handleSubmit(e);
-          }}
-        />
+        <ChatInput value={input} onChange={setInput} onClickSend={handleSendMessage} />
       </ChatSection>
     </PageWrapper>
   );

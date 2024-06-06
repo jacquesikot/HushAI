@@ -1,7 +1,6 @@
 'use server';
 
 import { supabaseAdminClient } from '@/lib/supabase';
-import { create } from 'domain';
 
 export const fetchUserMessages = async (userId: string) => {
   try {
@@ -39,14 +38,16 @@ export const signInAnonymousUser = async () => {
     const { data } = await supabaseAdminClient.auth.signInAnonymously({
       options: {
         data: {
-          someData: '12345',
+          someData: '1234512',
         },
       },
     });
     const chatData = await createDefaultChat(data.user?.id as string);
+    const userMessages = await fetchUserMessages(data.user?.id as string);
     return {
       user: data.user,
       chat: chatData[0],
+      messages: userMessages,
     };
   } catch (error) {
     console.error(error);

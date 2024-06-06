@@ -117,7 +117,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, time, loading, speak
         <Time>{getFormattedTime(time)}</Time>
       </TopContainer>
 
-      <MessageWrapper speaker={speaker}>{loading ? <LoadingDots /> : message}</MessageWrapper>
+      <MessageWrapper speaker={speaker}>
+        {loading ? <LoadingDots /> : <div dangerouslySetInnerHTML={{ __html: message }} />}
+      </MessageWrapper>
     </Wrapper>
   );
 };

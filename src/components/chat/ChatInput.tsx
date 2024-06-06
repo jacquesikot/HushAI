@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import sendMessageIcon from '../../../public/send-message-icon.svg';
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   margin: ${(props) => props.theme.spacing['spacing-2xl'].value};
   display: flex;
   height: 104px;
@@ -45,16 +45,28 @@ const SendButtonContainer = styled.button`
 `;
 interface Props {
   value: string;
-  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange: (event: string) => void;
   onClickSend: any;
 }
 
 const ChatInput = ({ value, onChange, onClickSend }: Props) => {
-  return (
-    <Wrapper onSubmit={onClickSend}>
-      <ChatInputField placeholder="Send a message" value={value} onChange={onChange} itemType="text" />
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+      onClickSend();
+    }
+  };
 
-      <SendButtonContainer type="submit">
+  return (
+    <Wrapper>
+      <ChatInputField
+        placeholder="Send a message"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        itemType="text"
+        onKeyDown={handleKeyDown}
+      />
+
+      <SendButtonContainer onClick={onClickSend}>
         <Image src={sendMessageIcon} alt="Learn ICT send message icon" />
       </SendButtonContainer>
     </Wrapper>
